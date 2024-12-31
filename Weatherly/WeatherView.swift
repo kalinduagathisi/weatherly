@@ -14,22 +14,14 @@ struct WeatherView: View {
         ScrollView {
 
             VStack {
-                summeryView
+                
+                // weather summery view
+                WeatherSummeryView()
+                
                 hourlyForecastView
             }
         }
         .background(.blue)
-    }
-}
-
-// summery view
-var summeryView: some View {
-    VStack {
-        Text("My Location")
-        Text("Colombo")
-        Text("84")
-        Text("Mostly Cloudy")
-        Text("H:88° L:70°")
     }
 }
 
