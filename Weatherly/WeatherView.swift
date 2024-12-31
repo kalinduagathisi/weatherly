@@ -12,40 +12,25 @@ struct WeatherView: View {
     var body: some View {
 
         ScrollView {
-
+            
             VStack {
                 
                 // weather summery view
                 WeatherSummeryView()
+                    .padding(.top, 60)
+                    .padding(.bottom, 40)
                 
-                hourlyForecastView
+                // hourly forecast view
+                HourlyForecastView()
             }
+            .padding(.horizontal)
         }
         .background(.blue)
     }
 }
 
-// hourly forecast view
-var hourlyForecastView: some View {
-    VStack {
-        Text("Cloudy conditions will continue for the rest of the day. Wind guessed to be 10mph")
-        
-        ScrollView(.horizontal) {
-            HStack {
-                ForEach(0..<23) {_ in
-                    VStack {
-                        Text("Now")
-                        Text("☀️")
-                        Text("68")
-                    }
-                    
-                }
-            }
-        }
-    }
-    .padding()
-    .background(Color.purple)
-}
+
+
 
 #Preview {
     WeatherView()

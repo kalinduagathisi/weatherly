@@ -14,20 +14,20 @@ struct WeatherSummeryView: View {
             Text("My Location")
                 .font(.system(size: 12))
                 .foregroundColor(.white)
-            
+
             Text("Colombo")
                 .font(.system(size: 32))
                 .foregroundColor(.white)
-            
+
             Text("84°")
                 .font(.system(size: 100))
                 .fontWeight(.thin)
                 .foregroundColor(.white)
-            
+
             Text("Mostly Cloudy")
                 .font(.system(size: 16))
                 .foregroundColor(.white)
-            
+
             Text("H:88° L:70°")
                 .font(.system(size: 24))
                 .foregroundColor(.white)
@@ -37,9 +37,13 @@ struct WeatherSummeryView: View {
 }
 
 #Preview {
-    WeatherSummeryView()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)  // Parent can still add this
-        .background(Color.blue)  // Background set in parent
-        .ignoresSafeArea()
+
+    ScrollView {
+        WeatherSummeryView()
+            .padding(.top, 60)
+    }
+    .frame(maxWidth: .infinity, maxHeight: .infinity)  // Parent can still add this
+    .background(Color.blue)  // Background set in parent
+    //    .ignoresSafeArea()
 
 }
