@@ -42,7 +42,7 @@ struct WeatherView: View {
                 
 
                 // hourly forecast view
-                HourlyForecastView()
+                HourlyForecastView(hourlyWeather: viewModel.hourlyWeather)
 
                 // 5-day forecast view
                 DailyForecastView()

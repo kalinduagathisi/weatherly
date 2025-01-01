@@ -19,6 +19,12 @@ struct MockData {
         ]
     )
     
+    static let hourlyWeather: [HourlyWeather] = [
+            HourlyWeather(dt: 1672616400, temp: 290.15, weather: [WeatherDetail(main: "Clouds", description: "cloudy", icon: "cloud.fill")]),
+            HourlyWeather(dt: 1672620000, temp: 292.15, weather: [WeatherDetail(main: "Clear", description: "clear sky", icon: "sun.max.fill")]),
+            // Add more mock entries here
+        ]
+    
     static let dailyWeather = DailyWeather(
         dt: 1684951200,
         temp: dailyTemperature,

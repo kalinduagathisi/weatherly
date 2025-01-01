@@ -64,6 +64,14 @@ class WeatherViewModel: ObservableObject {
     func kelvinToFahrenheit(kelvin: Double) -> Double {
         return (kelvin - 273.15) * 9/5 + 32
     }
+    
+    // Helper to format the hour
+    func formattedHour(from timestamp: Int) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h a" // e.g., "1 PM"
+        return formatter.string(from: date)
+    }
 
 }
 
