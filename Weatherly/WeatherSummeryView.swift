@@ -8,48 +8,54 @@
 import SwiftUI
 
 struct WeatherSummeryView: View {
-    
+
+    @StateObject var viewModel = WeatherViewModel()
+
     let cityName: String
     let currentWeather: CurrentWeather
-    let dailyTemperature: DailyTemperature
-    
+    let dailyWeather: DailyWeather
+
     var body: some View {
 
         VStack {
-            
+
             Text("My Location")
                 .font(.system(size: 12))
                 .foregroundColor(.white)
 
-            Text(cityName)
+            Text(cityName.capitalized)
                 .font(.system(size: 32))
                 .foregroundColor(.white)
 
-            Text("\(currentWeather.temp)")
-                .font(.system(size: 100))
-                .fontWeight(.thin)
-                .foregroundColor(.white)
+            Text(
+                "\(Int(viewModel.kelvinToFahrenheit( kelvin: currentWeather.temp)))°"
+            )
+            .font(.system(size: 100))
+            .fontWeight(.thin)
+            .foregroundColor(.white)
 
-            Text("\(currentWeather.weather[0])")
+            Text(currentWeather.weather.first?.description.capitalized ?? "N/A")
                 .font(.system(size: 16))
                 .foregroundColor(.white)
 
-            Text("\((dailyTemperature.min))° \(Int(dailyTemperature.max))°")
+            Text("\(Int(viewModel.kelvinToFahrenheit(kelvin: dailyWeather.temp.max)))°  \(Int(viewModel.kelvinToFahrenheit(kelvin: dailyWeather.temp.min)))°")
                 .font(.system(size: 24))
                 .foregroundColor(.white)
+
         }
 
     }
 }
 
 #Preview {
+
     ScrollView {
         HStack {
             Spacer()
             WeatherSummeryView(
                 cityName: "Colombo",
                 currentWeather: MockData.currentWeather,
-                dailyTemperature: MockData.dailyTemperature
+                dailyWeather: MockData.dailyWeather
             )
             .padding(.top, 60)
             Spacer()
@@ -57,6 +63,5 @@ struct WeatherSummeryView: View {
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.blue)
-//    .ignoresSafeArea()
+    //    .ignoresSafeArea()
 }
-

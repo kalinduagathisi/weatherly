@@ -10,8 +10,9 @@ import SwiftUI
 struct WeatherView: View {
 
     @StateObject  var viewModel = WeatherViewModel()
-    @State var location: String = ""
-
+    @State var address: String = "colombo"
+    
+    
     var body: some View {
 
         ScrollView {
@@ -26,13 +27,13 @@ struct WeatherView: View {
                 else {
                     
                     if let currentWeather = viewModel.currentWeather,
-                       let dailyTemperature = viewModel.dailyTemperature
+                       let dailyWeather = viewModel.dailyWeather.first
                     {
                         // weather summery view
                         WeatherSummeryView(
-                            cityName: location,
+                            cityName: address,
                             currentWeather: currentWeather,
-                            dailyTemperature: dailyTemperature
+                            dailyWeather: dailyWeather
                         )
                         .padding(.top, 60)
                         .padding(.bottom, 40)
@@ -48,11 +49,17 @@ struct WeatherView: View {
             }
             .padding(.horizontal)
         }
-        .onAppear() {
+        .onAppear {
             Task {
-//                await viewModel.fetchWeather(for: location)
+                do {
+                    let coordinate = try await viewModel.getCoordinateFrom(address: address)
+                    await viewModel.fetchWeather(lat: coordinate.latitude, lon: coordinate.longitude)
+                } catch {
+                    print("Geocoding failed: \(error.localizedDescription)")
+                }
             }
         }
+
         
         .background(.blue)
     }
