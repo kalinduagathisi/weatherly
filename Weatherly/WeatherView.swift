@@ -22,6 +22,9 @@ struct WeatherView: View {
                 
                 // hourly forecast view
                 HourlyForecastView()
+                
+                // 5-day forecast view
+                DailyForecastView()
             }
             .padding(.horizontal)
         }

@@ -39,10 +39,16 @@ struct WeatherSummeryView: View {
 #Preview {
 
     ScrollView {
-        WeatherSummeryView()
-            .padding(.top, 60)
+        HStack {
+            Spacer()
+            
+            WeatherSummeryView()
+                .padding(.top, 60)
+            
+            Spacer()
+        }
     }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)  // Parent can still add this
+//    .frame(maxWidth: .infinity, maxHeight: .infinity)  // Parent can still add this
     .background(Color.blue)  // Background set in parent
     //    .ignoresSafeArea()
 

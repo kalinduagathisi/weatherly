@@ -29,7 +29,9 @@ struct HourlyForecastView: View {
                                 .font(.system(size: 14))
                                 .fontWeight(.bold)
                                 .foregroundStyle(.white)
-                            Text("☀️")
+                            
+                            Image(systemName: "sun.max.fill")
+                                .foregroundColor(.yellow)
                                 .padding(.vertical, 2)
                             
                             Text("68")
