@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct DailyForecastProgressView: View {
+    let progress: Double
+
     var body: some View {
-        
-        ProgressView(value: 0.5, total: 1.0)
+        ProgressView(value: progress)
+            .progressViewStyle(LinearProgressViewStyle(tint: .yellow))
     }
 }
 
 #Preview {
-    DailyForecastProgressView()
+    DailyForecastProgressView(progress: 0.5)
 }

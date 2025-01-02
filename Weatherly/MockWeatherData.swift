@@ -33,6 +33,34 @@ struct MockData {
         ]
     )
     
+    static let mockDailyWeatherData = [
+        DailyWeather(
+                    dt: Int(Date().timeIntervalSince1970),
+                    temp: DailyTemperature(day: 75, min: 50, max: 80),
+                    weather: [WeatherDetail(main: "Clear", description: "Clear sky", icon: "01d")]
+                ),
+                DailyWeather(
+                    dt: Int(Date().addingTimeInterval(86400).timeIntervalSince1970),
+                    temp: DailyTemperature(day: 70, min: 52, max: 75),
+                    weather: [WeatherDetail(main: "Clouds", description: "Partly cloudy", icon: "03d")]
+                ),
+                DailyWeather(
+                    dt: Int(Date().addingTimeInterval(86400 * 2).timeIntervalSince1970),
+                    temp: DailyTemperature(day: 68, min: 55, max: 78),
+                    weather: [WeatherDetail(main: "Rain", description: "Light rain", icon: "10d")]
+                ),
+                DailyWeather(
+                    dt: Int(Date().addingTimeInterval(86400 * 3).timeIntervalSince1970),
+                    temp: DailyTemperature(day: 65, min: 53, max: 82),
+                    weather: [WeatherDetail(main: "Snow", description: "Snow showers", icon: "13d")]
+                ),
+                DailyWeather(
+                    dt: Int(Date().addingTimeInterval(86400 * 4).timeIntervalSince1970),
+                    temp: DailyTemperature(day: 60, min: 49, max: 74),
+                    weather: [WeatherDetail(main: "Thunderstorm", description: "Thunderstorm", icon: "11d")]
+                )
+    ]
+    
     static let dailyTemperature = DailyTemperature(
         day: 298.14,
         min: 298.14,

@@ -69,7 +69,7 @@ struct WeatherView: View {
                 HourlyForecastView(hourlyWeather: viewModel.hourlyWeather)
 
                 // 5-day forecast view
-                DailyForecastView()
+                DailyForecastView(dailyWeather: viewModel.dailyWeather)
             }
             .padding()
         }
@@ -80,7 +80,15 @@ struct WeatherView: View {
             }
         }
 
-        .background(.blue)
+        // Set sky gradient background
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.7)]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+        )
     }
 
     // Fetch weather data for London
