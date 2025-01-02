@@ -14,6 +14,10 @@ struct MockData {
         feelsLike: 30.2,
         pressure: 1014,
         humidity: 89,
+        wind_speed: 4.3,
+        wind_deg: 43.0,
+        dew_point: 3.4,
+        uvi: 0.0,
         weather: [
             WeatherDetail(main: "Clouds", description: "Partly Cloudy", icon: "04d")
         ]

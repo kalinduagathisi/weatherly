@@ -31,10 +31,14 @@ struct CurrentWeather: Codable {
     let feelsLike: Double
     let pressure: Int
     let humidity: Int
+    let wind_speed: Double
+    let wind_deg: Double
+    let dew_point: Double
+    let uvi: Double
     let weather: [WeatherDetail]
     
     enum CodingKeys: String, CodingKey {
-        case dt, temp, pressure, humidity, weather
+        case dt, temp, pressure, humidity, weather, wind_speed, wind_deg, dew_point, uvi
         case feelsLike = "feels_like"
     }
 }

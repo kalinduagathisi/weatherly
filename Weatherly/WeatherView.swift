@@ -76,6 +76,11 @@ struct WeatherView: View {
                     CurrentAirQualityView(airQualityEntry: currentAirQuality)
                 }
 
+                // extra weather details view
+                if let currentWeather = viewModel.currentWeather {
+                    ExtraWeatherInfoView(currentWeather: currentWeather)
+                }
+
             }
             .padding()
         }
@@ -109,7 +114,7 @@ struct WeatherView: View {
             // Fetch weather data for London
             await viewModel.fetchWeather(
                 lat: coordinate.latitude, lon: coordinate.longitude)
-            
+
             await viewModel.fetchAirQuality(
                 lat: coordinate.latitude, lon: coordinate.longitude)
         } catch {
@@ -127,7 +132,7 @@ struct WeatherView: View {
             // Fetch weather data using the obtained coordinates
             await viewModel.fetchWeather(
                 lat: coordinate.latitude, lon: coordinate.longitude)
-            
+
             await viewModel.fetchAirQuality(
                 lat: coordinate.latitude, lon: coordinate.longitude)
         } catch {
