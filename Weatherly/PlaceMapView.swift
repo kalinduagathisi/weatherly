@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PlacesView: View {
+struct PlaceMapView: View {
 
     @State var address: String = "London"
     @State var selectedMark: City?
@@ -42,21 +42,21 @@ struct PlacesView: View {
                         color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
             )
             .padding(.horizontal, 20)
-            
+
             .toolbar {
                 NavigationLink(destination: PickFavouriteCitiesView()) {
                     Image(systemName: "heart")
                 }
             }
-            
-            
+
             // map view
             MapView(selectedMark: $selectedMark)
-            
-//            Divider()
-            
+
+            //            Divider()
+
             // list 5 favourite places
-            ScrollView {
+            ScrollView(.vertical, showsIndicators: false) {
+
                 Text("Top favourite places")
                     .font(.headline)
                 Text("London")
@@ -64,13 +64,15 @@ struct PlacesView: View {
                 Text("Scotland")
                 Text("Colorado")
                 Text("Tokyo")
+
             }
-            
+            .padding()
+
         }
-        
+
     }
 }
 
 #Preview {
-    PlacesView()
+    PlaceMapView()
 }

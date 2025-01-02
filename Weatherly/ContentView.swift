@@ -15,9 +15,14 @@ struct ContentView: View {
                     Label("Weather", systemImage: "cloud.fill")
                 }
             
-            PlacesView()
+            PlaceMapView()
                 .tabItem {
-                    Label("Places", systemImage: "map.fill")
+                    Label("Place Map", systemImage: "map.fill")
+                }
+            
+            StoredPlacesView()
+                .tabItem {
+                    Label("Stored Places", systemImage: "list.bullet.rectangle.fill")
                 }
         }
     }
