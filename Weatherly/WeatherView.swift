@@ -70,6 +70,12 @@ struct WeatherView: View {
 
                 // 5-day forecast view
                 DailyForecastView(dailyWeather: viewModel.dailyWeather)
+
+                // air quality view
+                if let currentAirQuality = viewModel.airQualityEntry {
+                    CurrentAirQualityView(airQualityEntry: currentAirQuality)
+                }
+
             }
             .padding()
         }
@@ -83,7 +89,9 @@ struct WeatherView: View {
         // Set sky gradient background
         .background(
             LinearGradient(
-                gradient: Gradient(colors: [Color.blue, Color.blue.opacity(0.7)]),
+                gradient: Gradient(colors: [
+                    Color.blue, Color.blue.opacity(0.7),
+                ]),
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -101,6 +109,9 @@ struct WeatherView: View {
             // Fetch weather data for London
             await viewModel.fetchWeather(
                 lat: coordinate.latitude, lon: coordinate.longitude)
+            
+            await viewModel.fetchAirQuality(
+                lat: coordinate.latitude, lon: coordinate.longitude)
         } catch {
             print("Geocoding failed for London: \(error.localizedDescription)")
         }
@@ -115,6 +126,9 @@ struct WeatherView: View {
 
             // Fetch weather data using the obtained coordinates
             await viewModel.fetchWeather(
+                lat: coordinate.latitude, lon: coordinate.longitude)
+            
+            await viewModel.fetchAirQuality(
                 lat: coordinate.latitude, lon: coordinate.longitude)
         } catch {
             print("Geocoding failed: \(error.localizedDescription)")

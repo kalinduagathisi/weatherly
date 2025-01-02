@@ -42,7 +42,7 @@ struct HourlyForecastView: View {
                                 systemName: weatherIcon(
                                     for: hour.weather.first?.main ?? "")
                             )
-                            .foregroundColor(.yellow)
+                            .foregroundColor(.white)
                             .padding(.vertical, 2)
 
                             // Temperature

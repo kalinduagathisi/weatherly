@@ -90,5 +90,20 @@ struct MockData {
 //        )
 //        alerts: nil
     )
+    
+    static let mockAirQualityEntry = AirQualityEntry(
+        main: AQIMain(aqi: 2),
+        components: AirComponents(
+            co: 287.06,
+            no: 0.0,
+            no2: 10.2,
+            o3: 50.78,
+            so2: 1.77,
+            pm2_5: 3.8,
+            pm10: 6.67,
+            nh3: 2.82
+        ),
+        dt: 1735787270
+    )
 }
 
