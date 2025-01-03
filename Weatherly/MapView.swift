@@ -10,7 +10,6 @@ import SwiftUI
 
 struct MapView: View {
 
-    //    @StateObject var viewModel = LocationViewModel()
     @EnvironmentObject var viewModel: WeatherViewModel
     @Binding var selectedMark: City?
 

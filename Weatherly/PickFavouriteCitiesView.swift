@@ -43,7 +43,7 @@ struct PickFavouriteCitiesView: View {
                         }
                     }
                 }
-                .navigationTitle("Select Favourite Cities")
+                .navigationTitle("Select for markdown on map")
             }
         }
     }

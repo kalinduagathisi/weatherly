@@ -8,11 +8,33 @@
 import SwiftUI
 
 struct StoredPlacesView: View {
+
+    @EnvironmentObject var viewModel: WeatherViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            VStack {
+                List {
+                    ForEach(viewModel.favoriteCities) { city in
+                        Text(city.name)
+                            .swipeActions {
+                                Button(role: .destructive) {
+                                    viewModel.removeCity(city)
+                                } label: {
+                                    Label("Remove", systemImage: "trash")
+                                }
+                            }
+                    }
+                }
+                .listStyle(.plain)
+            }
+            .padding(.vertical)
+            .navigationTitle("Saved Locations")
+        }
     }
 }
 
 #Preview {
     StoredPlacesView()
+        .environmentObject(WeatherViewModel())
 }

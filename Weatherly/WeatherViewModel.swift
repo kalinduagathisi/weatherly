@@ -56,6 +56,18 @@ class WeatherViewModel: ObservableObject {
         }
     }
 
+    // remove a city from favoriteCities
+    func removeCity(_ city: City) {
+        if let index = favoriteCities.firstIndex(where: { $0.id == city.id }) {
+            
+            // remove from fav cities
+            favoriteCities.remove(at: index)
+
+            // Remove from selectedCities
+            selectedCities.remove(city)
+        }
+    }
+
     // search weather for any location
     func searchWeather(cityName: String) async {
         do {
