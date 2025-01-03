@@ -9,8 +9,9 @@ import SwiftUI
 
 struct WeatherView: View {
 
-    @StateObject var viewModel = WeatherViewModel()
-    @State var address: String = "London"
+    @EnvironmentObject var viewModel: WeatherViewModel
+//    @StateObject var viewModel = WeatherViewModel()
+//    @State var address: String = "Colombo"
 
     var body: some View {
 
@@ -20,14 +21,15 @@ struct WeatherView: View {
 
                 // search bar
                 HStack {
-                    TextField("Enter address", text: $address)
+                    TextField("Enter address", text: $viewModel.searchedCity)
                         .padding(.leading, 10)
                         .font(.system(size: 16))
                         .foregroundColor(.black)
                         .submitLabel(.search)  // This will make the return key appear as "Search"
                         .onSubmit {
                             Task {
-                                await searchWeather()
+//                                await searchWeather()
+                                await viewModel.searchWeather(cityName: viewModel.searchedCity)
                             }
                         }
 
@@ -56,7 +58,7 @@ struct WeatherView: View {
                     {
                         // weather summery view
                         WeatherSummeryView(
-                            cityName: address,
+                            cityName: viewModel.confirmedCity,
                             currentWeather: currentWeather,
                             dailyWeather: dailyWeather
                         )
@@ -87,7 +89,7 @@ struct WeatherView: View {
         .onAppear {
             // When the app appears, fetch weather data for London
             Task {
-                await fetchWeatherForLondon()
+                await viewModel.fetchWeatherForLondon()
             }
         }
 
@@ -104,44 +106,45 @@ struct WeatherView: View {
         )
     }
 
-    // Fetch weather data for London
-    private func fetchWeatherForLondon() async {
-        do {
-            // Get coordinates for London
-            let coordinate = try await viewModel.getCoordinateFrom(
-                address: "London")
-
-            // Fetch weather data for London
-            await viewModel.fetchWeather(
-                lat: coordinate.latitude, lon: coordinate.longitude)
-
-            await viewModel.fetchAirQuality(
-                lat: coordinate.latitude, lon: coordinate.longitude)
-        } catch {
-            print("Geocoding failed for London: \(error.localizedDescription)")
-        }
-    }
+//    // Fetch weather data for London
+//    private func fetchWeatherForLondon() async {
+//        do {
+//            // Get coordinates for London
+//            let coordinate = try await viewModel.getCoordinateFrom(
+//                address: "London")
+//
+//            // Fetch weather data for London
+//            await viewModel.fetchWeather(
+//                lat: coordinate.latitude, lon: coordinate.longitude)
+//
+//            await viewModel.fetchAirQuality(
+//                lat: coordinate.latitude, lon: coordinate.longitude)
+//        } catch {
+//            print("Geocoding failed for London: \(error.localizedDescription)")
+//        }
+//    }
 
     // Helper method to handle async weather search for a specific address
-    private func searchWeather() async {
-        do {
-            // Get coordinates for the searched address
-            let coordinate = try await viewModel.getCoordinateFrom(
-                address: address)
-
-            // Fetch weather data using the obtained coordinates
-            await viewModel.fetchWeather(
-                lat: coordinate.latitude, lon: coordinate.longitude)
-
-            await viewModel.fetchAirQuality(
-                lat: coordinate.latitude, lon: coordinate.longitude)
-        } catch {
-            print("Geocoding failed: \(error.localizedDescription)")
-        }
-    }
+//    private func searchWeather() async {
+//        do {
+//            // Get coordinates for the searched address
+//            let coordinate = try await viewModel.getCoordinateFrom(
+//                address: address)
+//
+//            // Fetch weather data using the obtained coordinates
+//            await viewModel.fetchWeather(
+//                lat: coordinate.latitude, lon: coordinate.longitude)
+//
+//            await viewModel.fetchAirQuality(
+//                lat: coordinate.latitude, lon: coordinate.longitude)
+//        } catch {
+//            print("Geocoding failed: \(error.localizedDescription)")
+//        }
+//    }
 
 }
 
 #Preview {
+//    WeatherView(address: .constant("London"))
     WeatherView()
 }

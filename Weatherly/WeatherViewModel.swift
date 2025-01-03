@@ -21,7 +21,53 @@ class WeatherViewModel: ObservableObject {
     @Published var coordinate: CLLocationCoordinate2D? = nil
     @Published var geocodingError: Error? = nil
 
+    @Published var searchedCity: String = "London"
+    @Published var confirmedCity: String = "London"
+    
+    @Published var isWeatherLoaded: Bool = false
+
     private let geocoder = CLGeocoder()
+
+    // search weather for any location
+    func searchWeather(cityName: String) async {
+        do {
+            // Get coordinates for the searched address
+            let coordinate = try await getCoordinateFrom(
+                address: searchedCity)
+
+            // call fetchWeather()
+            await fetchWeather(
+                lat: coordinate.latitude, lon: coordinate.longitude)
+
+            // call fetchAirQuality()
+            await fetchAirQuality(
+                lat: coordinate.latitude, lon: coordinate.longitude)
+
+            // Update the shared property
+            DispatchQueue.main.async {
+                self.confirmedCity = cityName
+            }
+        } catch {
+            print("Geocoding failed: \(error.localizedDescription)")
+        }
+    }
+
+    // fetch weather for London
+    func fetchWeatherForLondon() async {
+        guard !isWeatherLoaded else { return }  // Prevent refetching
+        do {
+            let coordinate = try await getCoordinateFrom(address: "London")
+            await fetchWeather(
+                lat: coordinate.latitude, lon: coordinate.longitude)
+            await fetchAirQuality(
+                lat: coordinate.latitude, lon: coordinate.longitude)
+            DispatchQueue.main.async {
+                self.isWeatherLoaded = true
+            }
+        } catch {
+            print("Geocoding failed for London: \(error.localizedDescription)")
+        }
+    }
 
     // Fetch weather data for given latitude and longitude
     func fetchWeather(lat: Double, lon: Double) async {

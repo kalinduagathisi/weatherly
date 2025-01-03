@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct PlaceMapView: View {
-
-    @State var address: String = "London"
+    
+    @EnvironmentObject var viewModel: WeatherViewModel
+//    @Binding var address: String
     @State var selectedMark: City?
 
     var body: some View {
@@ -18,7 +19,7 @@ struct PlaceMapView: View {
 
             // search bar
             HStack {
-                TextField("Enter address", text: $address)
+                TextField("Enter address", text: $viewModel.searchedCity)
                     .padding(.leading, 10)
                     .font(.system(size: 16))
                     .foregroundColor(.black)
@@ -74,5 +75,6 @@ struct PlaceMapView: View {
 }
 
 #Preview {
+//    PlaceMapView(address: .constant("London"))
     PlaceMapView()
 }

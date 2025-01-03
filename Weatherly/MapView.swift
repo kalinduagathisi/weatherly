@@ -10,7 +10,7 @@ import MapKit
 
 struct MapView: View {
     
-    @StateObject var viewModel = LocationViewModel()
+//    @StateObject var viewModel = LocationViewModel()
     @Binding var selectedMark: City?
     
     var body: some View {
