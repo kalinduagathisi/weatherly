@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct PlaceMapView: View {
-    
+
     @EnvironmentObject var viewModel: WeatherViewModel
-//    @Binding var address: String
+    //    @Binding var address: String
     @State var selectedMark: City?
 
     var body: some View {
@@ -23,11 +23,12 @@ struct PlaceMapView: View {
                     .padding(.leading, 10)
                     .font(.system(size: 16))
                     .foregroundColor(.black)
-                    .submitLabel(.search)  // This will make the return key appear as "Search"
+                    .submitLabel(.search)
                     .onSubmit {
-                        //                        Task {
-                        //                            await searchWeather()
-                        //                        }
+                        Task {
+                            await viewModel.searchWeather(
+                                cityName: viewModel.searchedCity)
+                        }
                     }
 
                 Image(systemName: "magnifyingglass")
@@ -53,28 +54,12 @@ struct PlaceMapView: View {
             // map view
             MapView(selectedMark: $selectedMark)
 
-            //            Divider()
-
-            // list 5 favourite places
-            ScrollView(.vertical, showsIndicators: false) {
-
-                Text("Top favourite places")
-                    .font(.headline)
-                Text("London")
-                Text("Amsterdam")
-                Text("Scotland")
-                Text("Colorado")
-                Text("Tokyo")
-
-            }
-            .padding()
-
         }
 
     }
 }
 
 #Preview {
-//    PlaceMapView(address: .constant("London"))
+    //    PlaceMapView(address: .constant("London"))
     PlaceMapView()
 }

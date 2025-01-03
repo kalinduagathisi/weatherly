@@ -7,11 +7,15 @@
 
 import Foundation
 
-struct City: Identifiable, Codable {
-    let id = UUID()
+struct City: Identifiable, Codable, Hashable {
+    let id: UUID
     let name: String
     let latitude: Double
     let longitude: Double
+
+    // Hashable and Equatable are synthesized automatically because all properties are Hashable.
 }
+
+
 
 

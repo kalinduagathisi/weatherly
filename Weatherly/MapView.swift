@@ -5,19 +5,30 @@
 //  Created by Kalindu Agathisi on 2025-01-02.
 //
 
-import SwiftUI
 import MapKit
+import SwiftUI
 
 struct MapView: View {
-    
-//    @StateObject var viewModel = LocationViewModel()
+
+    //    @StateObject var viewModel = LocationViewModel()
+    @EnvironmentObject var viewModel: WeatherViewModel
     @Binding var selectedMark: City?
-    
+
     var body: some View {
         VStack {
-            
-            Map()
-            
+
+            Map(selection: $selectedMark) {
+                ForEach(Array(viewModel.selectedCities), id: \.id) { city in
+                    Marker(
+                        city.name,
+                        coordinate: CLLocationCoordinate2D(
+                            latitude: city.latitude,
+                            longitude: city.longitude
+                        ))
+                }
+            }
+            .mapStyle(.hybrid)
+
         }
     }
 }

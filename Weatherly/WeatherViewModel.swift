@@ -23,10 +23,38 @@ class WeatherViewModel: ObservableObject {
 
     @Published var searchedCity: String = "London"
     @Published var confirmedCity: String = "London"
-    
+
     @Published var isWeatherLoaded: Bool = false
 
+    @Published var favoriteCities: [City] = [
+        City(
+            id: UUID(), name: "New York", latitude: 40.7128, longitude: -74.0060
+        ),
+        City(
+            id: UUID(), name: "Los Angeles", latitude: 34.0522,
+            longitude: -118.2437),
+        City(
+            id: UUID(), name: "Chicago", latitude: 41.8781, longitude: -87.6298),
+    ]
+
+    @Published var selectedCities: Set<City> = []
+
+    @Published var showSaveAlert: Bool = false
+
     private let geocoder = CLGeocoder()
+
+    // add to favourite cities
+    func saveToFavorites(cityName: String, coordinates: CLLocationCoordinate2D)
+    {
+        let city = City(
+            id: UUID(),
+            name: cityName,
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude)
+        if !favoriteCities.contains(where: { $0.name == city.name }) {
+            favoriteCities.append(city)
+        }
+    }
 
     // search weather for any location
     func searchWeather(cityName: String) async {
@@ -46,6 +74,11 @@ class WeatherViewModel: ObservableObject {
             // Update the shared property
             DispatchQueue.main.async {
                 self.confirmedCity = cityName
+                if !self.favoriteCities.contains(where: { $0.name == cityName })
+                {
+                    self.showSaveAlert = true
+                }
+
             }
         } catch {
             print("Geocoding failed: \(error.localizedDescription)")

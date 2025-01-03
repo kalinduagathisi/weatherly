@@ -8,8 +8,44 @@
 import SwiftUI
 
 struct PickFavouriteCitiesView: View {
+
+    @EnvironmentObject var viewModel: WeatherViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            if viewModel.favoriteCities.isEmpty {
+                Text("No favourite cities added.")
+                    .foregroundColor(.gray)
+                    .padding()
+            } else {
+                List {
+                    ForEach(viewModel.favoriteCities, id: \.self) { city in
+                        HStack {
+                            Text(city.name)
+
+                            Spacer()
+
+                            if viewModel.selectedCities.contains(city) {
+                                Button {
+                                    viewModel.selectedCities.remove(city)
+                                } label: {
+                                    Image(systemName: "xmark.circle.fill")
+                                        .foregroundColor(.red)
+                                }
+                            } else {
+                                Button {
+                                    viewModel.selectedCities.insert(city)
+                                } label: {
+                                    Image(systemName: "plus.circle")
+                                        .foregroundColor(.green)
+                                }
+                            }
+                        }
+                    }
+                }
+                .navigationTitle("Select Favourite Cities")
+            }
+        }
     }
 }
 
