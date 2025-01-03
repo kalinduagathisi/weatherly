@@ -111,59 +111,42 @@ struct WeatherView: View {
                 "Do you want to add \(viewModel.confirmedCity) to your favorites?"
             )
         }
-
-        // Set sky gradient background
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color.blue, Color.blue.opacity(0.7),
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
+        
+        .alert(isPresented: $viewModel.showErrorAlert) {
+            Alert(
+                title: Text("City Not Found"),
+                message: Text("We couldn't find weather data for \(viewModel.searchedCity). Please try again."),
+                dismissButton: .default(Text("OK"))
             )
-            .ignoresSafeArea()
+        }
+        
+        .background(
+            Image("bg3")
+                .resizable() // Makes the image resizable
+                .scaledToFill() // Makes sure the image fills the entire area without distortion
+                .ignoresSafeArea() // Ensures the image covers the whole screen
         )
+
+//        // Set sky gradient background
+//        .background(
+//            LinearGradient(
+//                gradient: Gradient(colors: [
+//                    Color.blue, Color.blue.opacity(0.7),
+//                ]),
+//                startPoint: .top,
+//                endPoint: .bottom
+//            )
+//            .ignoresSafeArea()
+//        )
+        
     }
 
-    //    // Fetch weather data for London
-    //    private func fetchWeatherForLondon() async {
-    //        do {
-    //            // Get coordinates for London
-    //            let coordinate = try await viewModel.getCoordinateFrom(
-    //                address: "London")
-    //
-    //            // Fetch weather data for London
-    //            await viewModel.fetchWeather(
-    //                lat: coordinate.latitude, lon: coordinate.longitude)
-    //
-    //            await viewModel.fetchAirQuality(
-    //                lat: coordinate.latitude, lon: coordinate.longitude)
-    //        } catch {
-    //            print("Geocoding failed for London: \(error.localizedDescription)")
-    //        }
-    //    }
+    
 
-    // Helper method to handle async weather search for a specific address
-    //    private func searchWeather() async {
-    //        do {
-    //            // Get coordinates for the searched address
-    //            let coordinate = try await viewModel.getCoordinateFrom(
-    //                address: address)
-    //
-    //            // Fetch weather data using the obtained coordinates
-    //            await viewModel.fetchWeather(
-    //                lat: coordinate.latitude, lon: coordinate.longitude)
-    //
-    //            await viewModel.fetchAirQuality(
-    //                lat: coordinate.latitude, lon: coordinate.longitude)
-    //        } catch {
-    //            print("Geocoding failed: \(error.localizedDescription)")
-    //        }
-    //    }
-
+    
 }
 
 #Preview {
-    //    WeatherView(address: .constant("London"))
     WeatherView()
+        .environmentObject(WeatherViewModel())
 }

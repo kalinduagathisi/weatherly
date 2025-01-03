@@ -40,6 +40,7 @@ class WeatherViewModel: ObservableObject {
     @Published var selectedCities: Set<City> = []
 
     @Published var showSaveAlert: Bool = false
+    @Published var showErrorAlert: Bool = false
 
     private let geocoder = CLGeocoder()
 
@@ -59,7 +60,7 @@ class WeatherViewModel: ObservableObject {
     // remove a city from favoriteCities
     func removeCity(_ city: City) {
         if let index = favoriteCities.firstIndex(where: { $0.id == city.id }) {
-            
+
             // remove from fav cities
             favoriteCities.remove(at: index)
 
@@ -93,6 +94,9 @@ class WeatherViewModel: ObservableObject {
 
             }
         } catch {
+            DispatchQueue.main.async {
+                self.showErrorAlert = true
+            }
             print("Geocoding failed: \(error.localizedDescription)")
         }
     }
