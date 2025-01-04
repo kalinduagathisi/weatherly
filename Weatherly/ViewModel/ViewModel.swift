@@ -9,7 +9,7 @@ import CoreLocation
 import Foundation
 
 @MainActor
-class WeatherViewModel: ObservableObject {
+class ViewModel: ObservableObject {
     @Published var currentWeather: CurrentWeather?
     @Published var hourlyWeather: [HourlyWeather] = []
     @Published var dailyWeather: [DailyWeather] = []

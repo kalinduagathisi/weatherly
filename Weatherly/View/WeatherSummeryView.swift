@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WeatherSummeryView: View {
 
-    @StateObject var viewModel = WeatherViewModel()
+    @StateObject var viewModel = ViewModel()
 
     let cityName: String
     let currentWeather: CurrentWeather

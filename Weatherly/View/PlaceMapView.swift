@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PlaceMapView: View {
 
-    @EnvironmentObject var viewModel: WeatherViewModel
+    @EnvironmentObject var viewModel: ViewModel
     //    @Binding var address: String
     @State var selectedMark: City?
 

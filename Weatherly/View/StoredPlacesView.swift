@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StoredPlacesView: View {
 
-    @EnvironmentObject var viewModel: WeatherViewModel
+    @EnvironmentObject var viewModel: ViewModel
 
     var body: some View {
         NavigationStack {
@@ -36,5 +36,5 @@ struct StoredPlacesView: View {
 
 #Preview {
     StoredPlacesView()
-        .environmentObject(WeatherViewModel())
+        .environmentObject(ViewModel())
 }

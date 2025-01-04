@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PickFavouriteCitiesView: View {
 
-    @EnvironmentObject var viewModel: WeatherViewModel
+    @EnvironmentObject var viewModel: ViewModel
 
     var body: some View {
         NavigationStack {

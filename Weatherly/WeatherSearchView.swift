@@ -10,7 +10,7 @@ import SwiftUI
 struct WeatherSearchView: View {
 
     @Binding var address: String
-    @StateObject var viewModel = WeatherViewModel()
+    @StateObject var viewModel = ViewModel()
 
     var body: some View {
         // Search bar that triggers API call on return key press

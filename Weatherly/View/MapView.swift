@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MapView: View {
 
-    @EnvironmentObject var viewModel: WeatherViewModel
+    @EnvironmentObject var viewModel: ViewModel
     @Binding var selectedMark: City?
 
     var body: some View {

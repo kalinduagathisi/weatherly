@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct WeatherlyApp: App {
     
-    @StateObject var viewModel = WeatherViewModel()
+    @StateObject var viewModel = ViewModel()
     
     var body: some Scene {
         WindowGroup {
