@@ -26,6 +26,12 @@ class ViewModel: ObservableObject {
 
     @Published var isWeatherLoaded: Bool = false
 
+    @Published var selectedCities: Set<City> = []
+
+    @Published var showSaveAlert: Bool = false
+    @Published var showErrorAlert: Bool = false
+    @Published var isLoading: Bool = false
+    
     @Published var favoriteCities: [City] = [
         City(
             id: UUID(), name: "New York", latitude: 40.7128, longitude: -74.0060
@@ -36,12 +42,7 @@ class ViewModel: ObservableObject {
         City(
             id: UUID(), name: "Chicago", latitude: 41.8781, longitude: -87.6298),
     ]
-
-    @Published var selectedCities: Set<City> = []
-
-    @Published var showSaveAlert: Bool = false
-    @Published var showErrorAlert: Bool = false
-
+    
     private let geocoder = CLGeocoder()
 
     // add to favourite cities
@@ -120,6 +121,7 @@ class ViewModel: ObservableObject {
 
     // Fetch weather data for given latitude and longitude
     func fetchWeather(lat: Double, lon: Double) async {
+        self.isLoading = true
         do {
             // Call the async API method with latitude and longitude
             let weatherResponse = try await APIService.shared.fetchWeather(
@@ -130,10 +132,12 @@ class ViewModel: ObservableObject {
             self.hourlyWeather = weatherResponse.hourly
             self.dailyWeather = weatherResponse.daily
             self.errorMessage = nil  // Clear any previous error
+            
         } catch {
             // Handle and publish the error
             self.errorMessage = error.localizedDescription
         }
+        self.isLoading = false
     }
 
     // fetch air quality data

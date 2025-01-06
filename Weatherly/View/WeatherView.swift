@@ -14,9 +14,7 @@ struct WeatherView: View {
     var body: some View {
 
         ScrollView {
-
             VStack {
-
                 // search bar
                 HStack {
                     TextField("Enter address", text: $viewModel.searchedCity)
@@ -66,7 +64,9 @@ struct WeatherView: View {
                 }
 
                 // hourly forecast view
-                HourlyForecastView(hourlyWeather: viewModel.hourlyWeather, dailyWeather: viewModel.dailyWeather)
+                HourlyForecastView(
+                    hourlyWeather: viewModel.hourlyWeather,
+                    dailyWeather: viewModel.dailyWeather)
 
                 // 5-day forecast view
                 DailyForecastView(dailyWeather: viewModel.dailyWeather)
