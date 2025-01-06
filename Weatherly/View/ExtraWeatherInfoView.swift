@@ -33,7 +33,7 @@ struct ExtraWeatherInfoView: View {
                     .fontWeight(.medium)
                     .foregroundColor(Color.white)
                 Spacer()
-                Text("\(currentWeather.wind_speed, specifier: "%.1f") mph")
+                Text("\(currentWeather.wind_speed, specifier: "%.1f")")
                     .fontWeight(.medium)
                     .foregroundColor(Color.white)
             }
@@ -47,7 +47,7 @@ struct ExtraWeatherInfoView: View {
                     .fontWeight(.medium)
                     .foregroundColor(Color.white)
                 Spacer()
-                Text("\(currentWeather.wind_deg, specifier: "%.1f")°")
+                Text("\(currentWeather.wind_deg, specifier: "%.2f")°")
                     .fontWeight(.medium)
                     .foregroundColor(Color.white)
             }
@@ -61,7 +61,7 @@ struct ExtraWeatherInfoView: View {
                     .fontWeight(.medium)
                     .foregroundColor(Color.white)
                 Spacer()
-                Text("\(currentWeather.humidity, specifier: "%.1f")")
+                Text("\(currentWeather.humidity)")
                     .fontWeight(.medium)
                     .foregroundColor(Color.white)
             }
@@ -89,7 +89,7 @@ struct ExtraWeatherInfoView: View {
                     .fontWeight(.medium)
                     .foregroundColor(Color.white)
                 Spacer()
-                Text("\(currentWeather.pressure, specifier: "%.1f")")
+                Text("\(currentWeather.pressure)")
                     .fontWeight(.medium)
                     .foregroundColor(Color.white)
             }

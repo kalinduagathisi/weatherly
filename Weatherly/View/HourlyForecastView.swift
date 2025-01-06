@@ -10,13 +10,12 @@ import SwiftUI
 struct HourlyForecastView: View {
 
     let hourlyWeather: [HourlyWeather]
+    let dailyWeather: [DailyWeather]
 
     var body: some View {
         VStack(alignment: .leading) {
             // Header description
-            Text(
-                "Cloudy conditions will continue for the rest of the day. Wind guessed to be 10mph."
-            )
+            Text(dailyWeather.first?.summary ?? "N/A")
             .font(.system(size: 14))
             .fontWeight(.medium)
             .foregroundStyle(.white)
@@ -47,7 +46,7 @@ struct HourlyForecastView: View {
 
                             // Temperature
                             Text(
-                                "\(Int(kelvinToFahrenheit(kelvin: hour.temp)))°"
+                                "\(hour.temp, specifier: "%.1f")°"
                             )
                             .font(.system(size: 20))
                             .fontWeight(.medium)
@@ -79,11 +78,6 @@ struct HourlyForecastView: View {
         }
     }
     
-    // convert K to f
-    func kelvinToFahrenheit(kelvin: Double) -> Double {
-        return (kelvin - 273.15) * 9/5 + 32
-    }
-    
     // Helper to format the hour
     func formattedHour(from timestamp: Int) -> String {
         let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
@@ -94,7 +88,8 @@ struct HourlyForecastView: View {
 
 #Preview {
     HourlyForecastView(
-        hourlyWeather: MockData.hourlyWeather
+        hourlyWeather: MockData.hourlyWeather,
+        dailyWeather: MockData.mockDailyWeatherData
     )
     .padding()
     .background(Color.blue)

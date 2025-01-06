@@ -23,10 +23,9 @@ struct WeatherView: View {
                         .padding(.leading, 10)
                         .font(.system(size: 16))
                         .foregroundColor(.black)
-                        .submitLabel(.search)  // This will make the return key appear as "Search"
+                        .submitLabel(.search)
                         .onSubmit {
                             Task {
-                                //                                await searchWeather()
                                 await viewModel.searchWeather(
                                     cityName: viewModel.searchedCity)
                             }
@@ -67,7 +66,7 @@ struct WeatherView: View {
                 }
 
                 // hourly forecast view
-                HourlyForecastView(hourlyWeather: viewModel.hourlyWeather)
+                HourlyForecastView(hourlyWeather: viewModel.hourlyWeather, dailyWeather: viewModel.dailyWeather)
 
                 // 5-day forecast view
                 DailyForecastView(dailyWeather: viewModel.dailyWeather)

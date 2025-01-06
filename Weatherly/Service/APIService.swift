@@ -14,7 +14,7 @@ class APIService {
     // fetch weather data
     func fetchWeather(lat: Double, lon: Double) async throws -> WeatherResponse {
         let apiKey = Config.apiKey // Fetch API key dynamically
-        let urlString = "https://api.openweathermap.org/data/3.0/onecall?lat=\(lat)&lon=\(lon)&exclude=minutely&appid=\(apiKey)"
+        let urlString = "https://api.openweathermap.org/data/3.0/onecall?lat=\(lat)&lon=\(lon)&units=metric&exclude=minutely&appid=\(apiKey)"
         
         print(urlString)
         
