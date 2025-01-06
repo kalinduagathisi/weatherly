@@ -34,4 +34,5 @@ struct MapView: View {
 
 #Preview {
     MapView(selectedMark: .constant(MockCityData.dummyCity))
+        .environmentObject(ViewModel())
 }

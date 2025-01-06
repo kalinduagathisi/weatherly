@@ -50,6 +50,7 @@ struct PlaceMapView: View {
                     Image(systemName: "heart")
                 }
             }
+            .padding(.vertical)
 
             // map view
             MapView(selectedMark: $selectedMark)
@@ -60,6 +61,6 @@ struct PlaceMapView: View {
 }
 
 #Preview {
-    //    PlaceMapView(address: .constant("London"))
     PlaceMapView()
+        .environmentObject(ViewModel())
 }

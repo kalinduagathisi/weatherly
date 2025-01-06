@@ -13,7 +13,7 @@ class APIService {
 
     // fetch weather data
     func fetchWeather(lat: Double, lon: Double) async throws -> WeatherResponse {
-        let apiKey = "6b033be26718e9c57182538da3597152"
+        let apiKey = Config.apiKey // Fetch API key dynamically
         let urlString = "https://api.openweathermap.org/data/3.0/onecall?lat=\(lat)&lon=\(lon)&exclude=minutely&appid=\(apiKey)"
         
         print(urlString)
@@ -28,7 +28,7 @@ class APIService {
     
     // fetch air quality data
     func fetchAirQualityData(lat: Double, lon: Double) async throws -> AirQualityDataResponse {
-        let apiKey = "6b033be26718e9c57182538da3597152"
+        let apiKey = Config.apiKey
         let urlString = "https://api.openweathermap.org/data/2.5/air_pollution?lat=\(lat)&lon=\(lon)&units=metric&appid=\(apiKey)"
         
         print(urlString)

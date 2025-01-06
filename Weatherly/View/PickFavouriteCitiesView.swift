@@ -51,4 +51,5 @@ struct PickFavouriteCitiesView: View {
 
 #Preview {
     PickFavouriteCitiesView()
+        .environmentObject(ViewModel())
 }

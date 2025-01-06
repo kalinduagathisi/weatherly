@@ -10,7 +10,6 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject private var viewModel = ViewModel()
-//    @State var address: String = "London"
     
     var body: some View {
         TabView {

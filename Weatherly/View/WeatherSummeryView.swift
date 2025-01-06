@@ -38,7 +38,7 @@ struct WeatherSummeryView: View {
                 .font(.system(size: 16))
                 .foregroundColor(.white)
 
-            Text("\(Int(viewModel.kelvinToFahrenheit(kelvin: dailyWeather.temp.max)))°  \(Int(viewModel.kelvinToFahrenheit(kelvin: dailyWeather.temp.min)))°")
+            Text("H :\(Int(viewModel.kelvinToFahrenheit(kelvin: dailyWeather.temp.max)))°  L :\(Int(viewModel.kelvinToFahrenheit(kelvin: dailyWeather.temp.min)))°")
                 .font(.system(size: 24))
                 .foregroundColor(.white)
 

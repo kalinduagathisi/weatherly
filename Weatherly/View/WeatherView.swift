@@ -10,8 +10,6 @@ import SwiftUI
 struct WeatherView: View {
 
     @EnvironmentObject var viewModel: ViewModel
-    //    @StateObject var viewModel = WeatherViewModel()
-    //    @State var address: String = "Colombo"
 
     var body: some View {
 
@@ -111,39 +109,26 @@ struct WeatherView: View {
                 "Do you want to add \(viewModel.confirmedCity) to your favorites?"
             )
         }
-        
+
         .alert(isPresented: $viewModel.showErrorAlert) {
             Alert(
                 title: Text("City Not Found"),
-                message: Text("We couldn't find weather data for \(viewModel.searchedCity). Please try again."),
+                message: Text(
+                    "We couldn't find weather data for \(viewModel.searchedCity). Please try again."
+                ),
                 dismissButton: .default(Text("OK"))
             )
         }
-        
+
         .background(
             Image("bg3")
-                .resizable() // Makes the image resizable
-                .scaledToFill() // Makes sure the image fills the entire area without distortion
-                .ignoresSafeArea() // Ensures the image covers the whole screen
+                .resizable()  // Makes the image resizable
+                .scaledToFill()  // Makes sure the image fills the entire area without distortion
+                .ignoresSafeArea()  // Ensures the image covers the whole screen
         )
 
-//        // Set sky gradient background
-//        .background(
-//            LinearGradient(
-//                gradient: Gradient(colors: [
-//                    Color.blue, Color.blue.opacity(0.7),
-//                ]),
-//                startPoint: .top,
-//                endPoint: .bottom
-//            )
-//            .ignoresSafeArea()
-//        )
-        
     }
 
-    
-
-    
 }
 
 #Preview {
