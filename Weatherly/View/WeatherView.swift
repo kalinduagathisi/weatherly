@@ -123,7 +123,7 @@ struct WeatherView: View {
             Image("bg3")
                 .resizable()  // Makes the image resizable
                 .scaledToFill()  // Makes sure the image fills the entire area without distortion
-                .ignoresSafeArea()  // Ensures the image covers the whole screen
+                .ignoresSafeArea(edges: .top)
         )
 
     }
