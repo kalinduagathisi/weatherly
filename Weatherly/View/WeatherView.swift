@@ -90,6 +90,7 @@ struct WeatherView: View {
                 await viewModel.fetchWeatherForLondon()
             }
         }
+
         .alert("Save to Favorites?", isPresented: $viewModel.showSaveAlert) {
             Button("Yes") {
                 Task {
@@ -109,15 +110,26 @@ struct WeatherView: View {
             )
         }
 
-        .alert(isPresented: $viewModel.showErrorAlert) {
-            Alert(
-                title: Text("City Not Found"),
+        .alert(isPresented: $viewModel.showCityExistsAlert) {
+            print("Alert state read: \(viewModel.showCityExistsAlert)")
+            return Alert(
+                title: Text("City Found"),
                 message: Text(
-                    "We couldn't find weather data for \(viewModel.searchedCity). Please try again."
+                    "\(viewModel.searchedCity) is already in the list. Using saved coordinates to fetch data."
                 ),
                 dismissButton: .default(Text("OK"))
             )
         }
+
+//        .alert(isPresented: $viewModel.showErrorAlert) {
+//            Alert(
+//                title: Text("City Not Found"),
+//                message: Text(
+//                    "We couldn't find weather data for \(viewModel.searchedCity). Please try again."
+//                ),
+//                dismissButton: .default(Text("OK"))
+//            )
+//        }
 
         .background(
             Image("bg3")

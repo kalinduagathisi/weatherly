@@ -29,9 +29,10 @@ class ViewModel: ObservableObject {
     @Published var selectedCities: Set<City> = []
 
     @Published var showSaveAlert: Bool = false
+    @Published var showCityExistsAlert: Bool = false
     @Published var showErrorAlert: Bool = false
     @Published var isLoading: Bool = false
-    
+
     @Published var favoriteCities: [City] = [
         City(
             id: UUID(), name: "New York", latitude: 40.7128, longitude: -74.0060
@@ -42,7 +43,7 @@ class ViewModel: ObservableObject {
         City(
             id: UUID(), name: "Chicago", latitude: 41.8781, longitude: -87.6298),
     ]
-    
+
     private let geocoder = CLGeocoder()
 
     // add to favourite cities
@@ -72,6 +73,32 @@ class ViewModel: ObservableObject {
 
     // search weather for any location
     func searchWeather(cityName: String) async {
+
+        let normalizedCityName = cityName.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        ).lowercased()
+
+        // Check if the city is already in favoriteCities
+        if let existingCity = favoriteCities.first(where: {
+            $0.name.lowercased() == normalizedCityName
+        }) {
+            DispatchQueue.main.async {
+                self.showCityExistsAlert = true
+                print("City exists alert triggered for: \(existingCity.name)")
+            }
+
+            // Use the existing coordinates to fetch data
+            await fetchWeather(
+                lat: existingCity.latitude, lon: existingCity.longitude)
+            await fetchAirQuality(
+                lat: existingCity.latitude, lon: existingCity.longitude)
+
+            DispatchQueue.main.async {
+                self.confirmedCity = existingCity.name
+            }
+            return
+        }
+
         do {
             // Get coordinates for the searched address
             let coordinate = try await getCoordinateFrom(
@@ -132,7 +159,7 @@ class ViewModel: ObservableObject {
             self.hourlyWeather = weatherResponse.hourly
             self.dailyWeather = weatherResponse.daily
             self.errorMessage = nil  // Clear any previous error
-            
+
         } catch {
             // Handle and publish the error
             self.errorMessage = error.localizedDescription
