@@ -237,4 +237,12 @@ class ViewModel: ObservableObject {
         return formatter.string(from: date)
     }
 
+    // Helper function to format date from UNIX timestamp
+    func formatDate(_ dt: Int) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(dt))
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEE"  // Example: Mon, Tue
+        return formatter.string(from: date)
+    }
+
 }

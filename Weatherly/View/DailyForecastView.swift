@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DailyForecastView: View {
 
+    @StateObject var viewModel = ViewModel()
+
     let dailyWeather: [DailyWeather]
 
     var body: some View {
@@ -29,7 +31,7 @@ struct DailyForecastView: View {
             // Use ForEach with real API data
             ForEach(dailyWeather.prefix(5), id: \.dt) { weather in
                 HStack {
-                    Text(formatDate(weather.dt))
+                    Text(viewModel.formatDate(weather.dt))
                         .font(.system(size: 16))
                         .fontWeight(.semibold)
                         .foregroundColor(Color.white)
@@ -68,14 +70,6 @@ struct DailyForecastView: View {
             .ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16.0))
     }
 
-    // Helper function to format date from UNIX timestamp
-    private func formatDate(_ dt: Int) -> String {
-        let date = Date(timeIntervalSince1970: TimeInterval(dt))
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEE" // Example: Mon, Tue
-        return formatter.string(from: date)
-    }
-    
     // Helper function to map weather condition to SF Symbols
     private func weatherIcon(for condition: String) -> String {
         switch condition.lowercased() {
@@ -95,7 +89,7 @@ struct DailyForecastView: View {
             return "cloud.fill"
         }
     }
-    
+
     // Helper function to calculate progress for the temperature bar
     private func progressValue(minTemp: Double, maxTemp: Double) -> Double {
         let range = maxTemp - minTemp

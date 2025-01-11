@@ -9,6 +9,8 @@ import SwiftUI
 
 struct HourlyForecastView: View {
 
+    @StateObject var viewModel = ViewModel()
+
     let hourlyWeather: [HourlyWeather]
     let dailyWeather: [DailyWeather]
 
@@ -16,11 +18,11 @@ struct HourlyForecastView: View {
         VStack(alignment: .leading) {
             // Header description
             Text(dailyWeather.first?.summary ?? "N/A")
-            .font(.system(size: 14))
-            .fontWeight(.medium)
-            .foregroundStyle(.white)
-            .shadow(radius: 2.0)
-            .padding(.bottom, 5)
+                .font(.system(size: 14))
+                .fontWeight(.medium)
+                .foregroundStyle(.white)
+                .shadow(radius: 2.0)
+                .padding(.bottom, 5)
 
             Divider()
                 .padding(.bottom, 10)
@@ -31,7 +33,7 @@ struct HourlyForecastView: View {
                     ForEach(hourlyWeather, id: \.dt) { hour in
                         VStack {
                             // Hour
-                            Text(formattedHour(from: hour.dt))
+                            Text(viewModel.formattedHour(from: hour.dt))
                                 .font(.system(size: 14))
                                 .fontWeight(.bold)
                                 .foregroundStyle(.white)
@@ -77,14 +79,8 @@ struct HourlyForecastView: View {
             return "cloud.fill"
         }
     }
-    
-    // Helper to format the hour
-    func formattedHour(from timestamp: Int) -> String {
-        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h a" // e.g., "1 PM"
-        return formatter.string(from: date)
-    }}
+
+}
 
 #Preview {
     HourlyForecastView(
