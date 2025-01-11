@@ -91,45 +91,46 @@ struct WeatherView: View {
             }
         }
 
-        .alert("Save to Favorites?", isPresented: $viewModel.showSaveAlert) {
-            Button("Yes") {
-                Task {
-                    if let coordinate = try? await viewModel.getCoordinateFrom(
-                        address: viewModel.confirmedCity)
-                    {
-                        viewModel.saveToFavorites(
-                            cityName: viewModel.confirmedCity,
-                            coordinates: coordinate)
-                    }
-                }
+        .alert(item: $viewModel.currentAlert) { alert in
+            switch alert {
+            case .cityExists:
+                return Alert(
+                    title: Text("City Found"),
+                    message: Text(
+                        "\(viewModel.searchedCity) is already in the list. Using saved coordinates to fetch data."
+                    ),
+                    dismissButton: .default(Text("OK"))
+                )
+            case .saveToFavorites:
+                return Alert(
+                    title: Text("Save to Favorites?"),
+                    message: Text(
+                        "Do you want to add \(viewModel.confirmedCity) to your favorites?"
+                    ),
+                    primaryButton: .default(Text("Yes")) {
+                        Task {
+                            if let coordinate =
+                                try? await viewModel.getCoordinateFrom(
+                                    address: viewModel.confirmedCity)
+                            {
+                                viewModel.saveToFavorites(
+                                    cityName: viewModel.confirmedCity,
+                                    coordinates: coordinate)
+                            }
+                        }
+                    },
+                    secondaryButton: .cancel(Text("No"))
+                )
+            case .error:
+                return Alert(
+                    title: Text("City Not Found"),
+                    message: Text(
+                        "We couldn't find weather data for \(viewModel.searchedCity). Please try again."
+                    ),
+                    dismissButton: .default(Text("OK"))
+                )
             }
-            Button("No", role: .cancel) {}
-        } message: {
-            Text(
-                "Do you want to add \(viewModel.confirmedCity) to your favorites?"
-            )
         }
-
-        .alert(isPresented: $viewModel.showCityExistsAlert) {
-            print("Alert state read: \(viewModel.showCityExistsAlert)")
-            return Alert(
-                title: Text("City Found"),
-                message: Text(
-                    "\(viewModel.searchedCity) is already in the list. Using saved coordinates to fetch data."
-                ),
-                dismissButton: .default(Text("OK"))
-            )
-        }
-
-//        .alert(isPresented: $viewModel.showErrorAlert) {
-//            Alert(
-//                title: Text("City Not Found"),
-//                message: Text(
-//                    "We couldn't find weather data for \(viewModel.searchedCity). Please try again."
-//                ),
-//                dismissButton: .default(Text("OK"))
-//            )
-//        }
 
         .background(
             Image("bg3")

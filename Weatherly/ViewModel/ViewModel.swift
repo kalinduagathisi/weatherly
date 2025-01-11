@@ -33,6 +33,8 @@ class ViewModel: ObservableObject {
     @Published var showErrorAlert: Bool = false
     @Published var isLoading: Bool = false
 
+    @Published var currentAlert: ActiveAlert?
+
     @Published var favoriteCities: [City] = [
         City(
             id: UUID(), name: "New York", latitude: 40.7128, longitude: -74.0060
@@ -83,7 +85,7 @@ class ViewModel: ObservableObject {
             $0.name.lowercased() == normalizedCityName
         }) {
             DispatchQueue.main.async {
-                self.showCityExistsAlert = true
+                self.currentAlert = .cityExists
                 print("City exists alert triggered for: \(existingCity.name)")
             }
 
@@ -117,13 +119,13 @@ class ViewModel: ObservableObject {
                 self.confirmedCity = cityName
                 if !self.favoriteCities.contains(where: { $0.name == cityName })
                 {
-                    self.showSaveAlert = true
+                    self.currentAlert = .saveToFavorites
                 }
 
             }
         } catch {
             DispatchQueue.main.async {
-                self.showErrorAlert = true
+                self.currentAlert = .error
             }
             print("Geocoding failed: \(error.localizedDescription)")
         }
