@@ -5,11 +5,13 @@
 //  Created by Kalindu Agathisi on 2024-12-28.
 //
 
+import SwiftData
 import SwiftUI
 
 struct WeatherView: View {
 
     @EnvironmentObject var viewModel: ViewModel
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
 
@@ -25,7 +27,7 @@ struct WeatherView: View {
                         .onSubmit {
                             Task {
                                 await viewModel.searchWeather(
-                                    cityName: viewModel.searchedCity)
+                                    cityName: viewModel.searchedCity, modelContext: modelContext)
                             }
                         }
 
@@ -115,7 +117,8 @@ struct WeatherView: View {
                             {
                                 viewModel.saveToFavorites(
                                     cityName: viewModel.confirmedCity,
-                                    coordinates: coordinate)
+                                    coordinates: coordinate,
+                                    modelContext: modelContext)
                             }
                         }
                     },

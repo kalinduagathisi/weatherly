@@ -10,7 +10,7 @@ import SwiftUI
 struct PlaceMapView: View {
 
     @EnvironmentObject var viewModel: ViewModel
-    //    @Binding var address: String
+    @Environment(\.modelContext) private var modelContext
     @State var selectedMark: City?
 
     var body: some View {
@@ -27,7 +27,8 @@ struct PlaceMapView: View {
                     .onSubmit {
                         Task {
                             await viewModel.searchWeather(
-                                cityName: viewModel.searchedCity)
+                                cityName: viewModel.searchedCity,
+                                modelContext: modelContext)
                         }
                     }
 

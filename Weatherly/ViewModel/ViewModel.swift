@@ -7,6 +7,7 @@
 
 import CoreLocation
 import Foundation
+import SwiftData
 
 @MainActor
 class ViewModel: ObservableObject {
@@ -35,99 +36,115 @@ class ViewModel: ObservableObject {
 
     @Published var currentAlert: ActiveAlert?
 
-    @Published var favoriteCities: [City] = [
-        City(
-            id: UUID(), name: "New York", latitude: 40.7128, longitude: -74.0060
-        ),
-        City(
-            id: UUID(), name: "Los Angeles", latitude: 34.0522,
-            longitude: -118.2437),
-        City(
-            id: UUID(), name: "Chicago", latitude: 41.8781, longitude: -87.6298),
-    ]
+    @Published var favoriteCities: [City] = []
 
     private let geocoder = CLGeocoder()
 
     // add to favourite cities
-    func saveToFavorites(cityName: String, coordinates: CLLocationCoordinate2D)
-    {
-        let city = City(
-            id: UUID(),
-            name: cityName,
-            latitude: coordinates.latitude,
-            longitude: coordinates.longitude)
-        if !favoriteCities.contains(where: { $0.name == city.name }) {
-            favoriteCities.append(city)
-        }
-    }
-
-    // remove a city from favoriteCities
-    func removeCity(_ city: City) {
-        if let index = favoriteCities.firstIndex(where: { $0.id == city.id }) {
-
-            // remove from fav cities
-            favoriteCities.remove(at: index)
-
-            // Remove from selectedCities
-            selectedCities.remove(city)
-        }
-    }
-
-    // search weather for any location
-    func searchWeather(cityName: String) async {
-
+    func saveToFavorites(
+        cityName: String, coordinates: CLLocationCoordinate2D,
+        modelContext: ModelContext
+    ) {
+        // Normalize the city name to lowercase before using it in the predicate
         let normalizedCityName = cityName.trimmingCharacters(
             in: .whitespacesAndNewlines
         ).lowercased()
 
-        // Check if the city is already in favoriteCities
-        if let existingCity = favoriteCities.first(where: {
-            $0.name.lowercased() == normalizedCityName
-        }) {
-            DispatchQueue.main.async {
-                self.currentAlert = .cityExists
-                print("City exists alert triggered for: \(existingCity.name)")
-            }
-
-            // Use the existing coordinates to fetch data
-            await fetchWeather(
-                lat: existingCity.latitude, lon: existingCity.longitude)
-            await fetchAirQuality(
-                lat: existingCity.latitude, lon: existingCity.longitude)
-
-            DispatchQueue.main.async {
-                self.confirmedCity = existingCity.name
-            }
-            return
-        }
+        // Create a fetch descriptor to look for existing cities with the same normalized name
+        let fetchDescriptor = FetchDescriptor<City>(
+            predicate: #Predicate { $0.name == normalizedCityName })
 
         do {
-            // Get coordinates for the searched address
-            let coordinate = try await getCoordinateFrom(
-                address: searchedCity)
+            // Check if the city already exists in the database
+            let existingCities = try modelContext.fetch(fetchDescriptor)
 
-            // call fetchWeather()
+            if !existingCities.isEmpty {
+                print("City already exists in favorites")
+                return
+            }
+
+            // Create a new City model
+            let city = City(
+                name: normalizedCityName,
+                latitude: coordinates.latitude,
+                longitude: coordinates.longitude,
+                showOnPlaceMap: false
+            )
+
+            // Add the new city to the SwiftData context
+            try modelContext.insert(city)
+            print("City saved to favorites: \(cityName)")
+        } catch {
+            print("Error during saveToFavorites: \(error.localizedDescription)")
+        }
+    }
+
+    // remove a city from favoriteCities
+    func removeCity(_ city: City, modelContext: ModelContext) {
+        do {
+            // Remove the city from the SwiftData context
+            try modelContext.delete(city)
+
+            // Since SwiftData handles state updates for @Query, we no longer need to manually update `favoriteCities`.
+            print("City removed: \(city.name)")
+        } catch {
+            print("Failed to remove city: \(error.localizedDescription)")
+        }
+    }
+
+    // search weather for any location
+    func searchWeather(cityName: String, modelContext: ModelContext) async {
+        let normalizedCityName = cityName.trimmingCharacters(
+            in: .whitespacesAndNewlines
+        ).lowercased()
+
+        do {
+            // Check if the city already exists in the database
+            let fetchDescriptor = FetchDescriptor<City>(
+                predicate: #Predicate { $0.name == normalizedCityName })
+
+            let existingCities = try modelContext.fetch(fetchDescriptor)
+
+            if let existingCity = existingCities.first {
+                DispatchQueue.main.async {
+                    self.currentAlert = .cityExists
+                    print(
+                        "City exists alert triggered for: \(existingCity.name)")
+                }
+
+                // Use the existing coordinates to fetch data
+                await fetchWeather(
+                    lat: existingCity.latitude, lon: existingCity.longitude
+                )
+                await fetchAirQuality(
+                    lat: existingCity.latitude, lon: existingCity.longitude
+                )
+
+                DispatchQueue.main.async {
+                    self.confirmedCity = existingCity.name
+                }
+                return
+            }
+
+            // Get coordinates for the searched address
+            let coordinate = try await getCoordinateFrom(address: searchedCity)
+
+            // Fetch weather data for the new location
             await fetchWeather(
                 lat: coordinate.latitude, lon: coordinate.longitude)
-
-            // call fetchAirQuality()
             await fetchAirQuality(
                 lat: coordinate.latitude, lon: coordinate.longitude)
 
-            // Update the shared property
+            // Update the shared property and alert
             DispatchQueue.main.async {
                 self.confirmedCity = cityName
-                if !self.favoriteCities.contains(where: { $0.name == cityName })
-                {
-                    self.currentAlert = .saveToFavorites
-                }
-
+                self.currentAlert = .saveToFavorites
             }
         } catch {
             DispatchQueue.main.async {
                 self.currentAlert = .error
             }
-            print("Geocoding failed: \(error.localizedDescription)")
+            print("Search failed: \(error.localizedDescription)")
         }
     }
 

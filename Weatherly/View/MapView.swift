@@ -6,18 +6,22 @@
 //
 
 import MapKit
+import SwiftData
 import SwiftUI
 
 struct MapView: View {
 
     @EnvironmentObject var viewModel: ViewModel
+    @Query(sort: \City.name, order: .forward) private var favoriteCities: [City]
     @Binding var selectedMark: City?
 
     var body: some View {
         VStack {
 
             Map(selection: $selectedMark) {
-                ForEach(Array(viewModel.selectedCities), id: \.id) { city in
+                // Filter cities where showOnPlaceMap is true
+                ForEach(favoriteCities.filter { $0.showOnPlaceMap }, id: \.id) {
+                    city in
                     Marker(
                         city.name,
                         coordinate: CLLocationCoordinate2D(

@@ -5,41 +5,50 @@
 //  Created by Kalindu Agathisi on 2025-01-02.
 //
 
+import SwiftData
 import SwiftUI
 
 struct PickFavouriteCitiesView: View {
 
     @EnvironmentObject var viewModel: ViewModel
 
+    @Query(sort: \City.name, order: .forward) private var favoriteCities: [City]
+    @Environment(\.modelContext) private var modelContext
+
     var body: some View {
         NavigationStack {
-            if viewModel.favoriteCities.isEmpty {
+            if favoriteCities.isEmpty {
                 Text("No favourite cities added.")
                     .foregroundColor(.gray)
                     .padding()
             } else {
                 List {
-                    ForEach(viewModel.favoriteCities, id: \.self) { city in
+                    ForEach(favoriteCities, id: \.self) { city in
                         HStack {
-                            Text(city.name)
+                            Text(city.name.capitalized)
 
                             Spacer()
 
-                            if viewModel.selectedCities.contains(city) {
-                                Button {
-                                    viewModel.selectedCities.remove(city)
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.red)
+                            Button {
+                                // Toggle the showOnPlaceMap value for the selected city
+                                if let index =
+                                    favoriteCities
+                                    .firstIndex(where: { $0.id == city.id })
+                                {
+                                    favoriteCities[index]
+                                        .showOnPlaceMap.toggle()
+
                                 }
-                            } else {
-                                Button {
-                                    viewModel.selectedCities.insert(city)
-                                } label: {
-                                    Image(systemName: "plus.circle")
-                                        .foregroundColor(.green)
-                                }
+                            } label: {
+                                Image(
+                                    systemName: city.showOnPlaceMap
+                                        ? "checkmark.circle.fill"
+                                        : "plus.circle"
+                                )
+                                .foregroundColor(
+                                    city.showOnPlaceMap ? .green : .red)
                             }
+
                         }
                     }
                 }

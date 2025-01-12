@@ -6,16 +6,21 @@
 //
 
 import Foundation
+import SwiftData
 
-struct City: Identifiable, Codable, Hashable {
-    let id: UUID
-    let name: String
-    let latitude: Double
-    let longitude: Double
+@Model
+final class City {
+    @Attribute(.unique) var name: String
+    var latitude: Double
+    var longitude: Double
+    var showOnPlaceMap: Bool
 
-    // Hashable and Equatable are synthesized automatically because all properties are Hashable.
+    init(
+        name: String, latitude: Double, longitude: Double, showOnPlaceMap: Bool
+    ) {
+        self.name = name
+        self.latitude = latitude
+        self.longitude = longitude
+        self.showOnPlaceMap = showOnPlaceMap
+    }
 }
-
-
-
-

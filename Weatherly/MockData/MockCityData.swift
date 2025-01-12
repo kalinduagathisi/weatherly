@@ -9,5 +9,5 @@ import Foundation
 
 struct MockCityData {
     
-    static let dummyCity = City(id: UUID(), name: "London", latitude: 0, longitude: 0)
+    static let dummyCity = City(name: "London", latitude: 0, longitude: 0, showOnPlaceMap: false)
 }

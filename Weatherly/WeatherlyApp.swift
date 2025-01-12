@@ -16,6 +16,7 @@ struct WeatherlyApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(viewModel)
+                .modelContainer(for: [City.self])
         }
     }
 }
