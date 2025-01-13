@@ -29,8 +29,9 @@ struct PickFavouriteCitiesView: View {
 
                             Spacer()
 
+                            // Toggle the showOnPlaceMap value for the selected city
                             Button {
-                                // Toggle the showOnPlaceMap value for the selected city
+
                                 if let index =
                                     favoriteCities
                                     .firstIndex(where: { $0.id == city.id })

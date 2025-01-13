@@ -24,6 +24,7 @@ struct WeatherView: View {
                         .font(.system(size: 16))
                         .foregroundColor(.black)
                         .submitLabel(.search)
+                    // on submit, get weather for searched city
                         .onSubmit {
                             Task {
                                 await viewModel.searchWeather(
@@ -86,13 +87,14 @@ struct WeatherView: View {
             }
             .padding()
         }
+        // When the app appears, fetch weather data for London
         .onAppear {
-            // When the app appears, fetch weather data for London
             Task {
                 await viewModel.fetchWeatherForLondon()
             }
         }
 
+        // show alert based in the activeAlert type
         .alert(item: $viewModel.currentAlert) { alert in
             switch alert {
             case .cityExists:
@@ -135,8 +137,9 @@ struct WeatherView: View {
             }
         }
 
+        // set bg img
         .background(
-            Image("bg3")
+            Image("bg1")
                 .resizable()  // Makes the image resizable
                 .scaledToFill()  // Makes sure the image fills the entire area without distortion
                 .ignoresSafeArea(edges: .top)

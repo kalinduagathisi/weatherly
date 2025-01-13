@@ -40,7 +40,7 @@ struct HourlyForecastView: View {
 
                             // Weather icon
                             Image(
-                                systemName: weatherIcon(
+                                systemName: viewModel.weatherIcon(
                                     for: hour.weather.first?.main ?? "")
                             )
                             .foregroundColor(.white)
@@ -62,22 +62,6 @@ struct HourlyForecastView: View {
         .padding()
         .background(
             .ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16.0))
-    }
-
-    // Helper to determine the appropriate weather icon
-    private func weatherIcon(for condition: String) -> String {
-        switch condition.lowercased() {
-        case "clear":
-            return "sun.max.fill"
-        case "clouds":
-            return "cloud.fill"
-        case "rain":
-            return "cloud.rain.fill"
-        case "snow":
-            return "cloud.snow.fill"
-        default:
-            return "cloud.fill"
-        }
     }
 
 }

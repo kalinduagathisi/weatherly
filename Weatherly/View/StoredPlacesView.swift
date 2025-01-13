@@ -24,7 +24,12 @@ struct StoredPlacesView: View {
                 } else {
                     List {
                         ForEach(favoriteCities) { city in
-                            Text(city.name.capitalized)
+                            HStack {
+                                Text(city.name.capitalized)
+                                Spacer()
+                                Text(String(format: "(%.4f, %.4f)", city.latitude, city.longitude))
+                            }
+                            
                                 .swipeActions {
                                     Button(role: .destructive) {
                                         viewModel.removeCity(

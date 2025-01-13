@@ -27,8 +27,6 @@ class ViewModel: ObservableObject {
 
     @Published var isWeatherLoaded: Bool = false
 
-    @Published var selectedCities: Set<City> = []
-
     @Published var showSaveAlert: Bool = false
     @Published var showCityExistsAlert: Bool = false
     @Published var showErrorAlert: Bool = false
@@ -260,6 +258,32 @@ class ViewModel: ObservableObject {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE"  // Example: Mon, Tue
         return formatter.string(from: date)
+    }
+
+    // Helper function to map weather condition to SF Symbols
+    func weatherIcon(for condition: String) -> String {
+        switch condition.lowercased() {
+        case "clear":
+            return "sun.max.fill"
+        case "clouds":
+            return "cloud.fill"
+        case "rain":
+            return "cloud.rain.fill"
+        case "snow":
+            return "cloud.snow.fill"
+        case "thunderstorm":
+            return "cloud.bolt.fill"
+        case "drizzle":
+            return "cloud.drizzle.fill"
+        default:
+            return "cloud.fill"
+        }
+    }
+
+    // Helper function to calculate progress for the temperature bar
+    func progressValue(minTemp: Double, maxTemp: Double) -> Double {
+        let range = maxTemp - minTemp
+        return range > 0 ? (maxTemp - minTemp) / range : 0.5
     }
 
 }

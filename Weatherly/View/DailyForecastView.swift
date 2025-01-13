@@ -39,7 +39,7 @@ struct DailyForecastView: View {
                     Spacer()
 
                     Image(
-                        systemName: weatherIcon(
+                        systemName: viewModel.weatherIcon(
                             for: weather.weather.first?.main ?? "")
                     )
                     .foregroundColor(.white)
@@ -51,7 +51,7 @@ struct DailyForecastView: View {
                         .foregroundColor(Color.white.opacity(0.6))
 
                     DailyForecastProgressView(
-                        progress: progressValue(
+                        progress: viewModel.progressValue(
                             minTemp: weather.temp.min,
                             maxTemp: weather.temp.max
                         )
@@ -68,32 +68,6 @@ struct DailyForecastView: View {
         .padding()
         .background(
             .ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16.0))
-    }
-
-    // Helper function to map weather condition to SF Symbols
-    private func weatherIcon(for condition: String) -> String {
-        switch condition.lowercased() {
-        case "clear":
-            return "sun.max.fill"
-        case "clouds":
-            return "cloud.fill"
-        case "rain":
-            return "cloud.rain.fill"
-        case "snow":
-            return "cloud.snow.fill"
-        case "thunderstorm":
-            return "cloud.bolt.fill"
-        case "drizzle":
-            return "cloud.drizzle.fill"
-        default:
-            return "cloud.fill"
-        }
-    }
-
-    // Helper function to calculate progress for the temperature bar
-    private func progressValue(minTemp: Double, maxTemp: Double) -> Double {
-        let range = maxTemp - minTemp
-        return range > 0 ? (maxTemp - minTemp) / range : 0.5
     }
 
 }
